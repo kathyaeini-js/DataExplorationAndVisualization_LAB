@@ -1,0 +1,20 @@
+import pandas as pd
+# Sample data
+data = {
+    'v1': ['ham', 'spam', 'ham', 'ham', 'spam'],
+    'v2': [
+        'Hey, are we still meeting today?',
+        'Congratulations! You won a $1000 Walmart gift card. Call now!',
+        'I’ll call you later when I’m free.',
+        'Don’t forget to bring the documents.',
+        'URGENT! You have won a free entry to the Bahamas. Text WIN now!'
+    ],
+    'v3': [None]*5,  # Placeholder columns from original dataset
+    'v4': [None]*5,
+    'v5': [None]*5
+}
+# Convert to DataFrame
+df = pd.DataFrame(data)
+# Save to CSV file
+df.to_csv('spam.csv', index=False, encoding='latin-1')
+print("✅ Sample spam.csv file created successfully.")
