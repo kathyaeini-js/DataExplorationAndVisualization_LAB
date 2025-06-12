@@ -1,0 +1,93 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample DataFrame
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+    'Score': [85, 90, 88]
+}
+df = pd.DataFrame(data)
+
+# 1. Line Plot
+plt.figure()
+plt.plot(df['Name'], df['Score'], marker='o')
+plt.title('Line Plot - Scores')
+plt.xlabel('Name')
+plt.ylabel('Score')
+plt.grid(True)
+plt.show()
+
+# 2. Bar Chart (Vertical)
+plt.figure()
+plt.bar(df['Name'], df['Age'], color='orange')
+plt.title('Bar Chart - Age')
+plt.xlabel('Name')
+plt.ylabel('Age')
+plt.show()
+
+# 3. Bar Chart (Horizontal)
+plt.figure()
+plt.barh(df['Name'], df['Score'], color='green')
+plt.title('Horizontal Bar Chart - Scores')
+plt.xlabel('Score')
+plt.ylabel('Name')
+plt.show()
+
+# 4. Pie Chart
+plt.figure()
+plt.pie(df['Score'], labels=df['Name'], autopct='%1.1f%%', startangle=90)
+plt.title('Pie Chart - Score Distribution')
+plt.axis('equal')
+plt.show()
+
+# 5. Scatter Plot
+plt.figure()
+plt.scatter(df['Age'], df['Score'], color='red')
+plt.title('Scatter Plot - Age vs Score')
+plt.xlabel('Age')
+plt.ylabel('Score')
+plt.grid(True)
+plt.show()
+
+# 6. Histogram (Example: simulate test scores distribution)
+test_scores = [85, 87, 88, 90, 85, 92, 88, 90, 91, 89]
+plt.figure()
+plt.hist(test_scores, bins=5, color='purple', edgecolor='black')
+plt.title('Histogram - Test Score Distribution')
+plt.xlabel('Score')
+plt.ylabel('Frequency')
+plt.show()
+
+# 7. Box Plot
+plt.figure()
+plt.boxplot(df['Score'])
+plt.title('Box Plot - Scores')
+plt.ylabel('Score')
+plt.grid(True)
+plt.show()
+
+# 8. Area Chart (Simulated using fill_between)
+plt.figure()
+x = range(len(df['Name']))
+plt.fill_between(x, df['Score'], color='skyblue', alpha=0.5)
+plt.plot(x, df['Score'], marker='o', color='blue')
+plt.xticks(x, df['Name'])
+plt.title('Area Chart - Scores')
+plt.xlabel('Name')
+plt.ylabel('Score')
+plt.grid(True)
+plt.show()
+
+# 9. Stacked Bar Chart (Add dummy subject scores)
+df['Math'] = [80, 85, 82]
+df['Science'] = [78, 88, 86]
+plt.figure()
+plt.bar(df['Name'], df['Math'], label='Math', color='skyblue')
+plt.bar(df['Name'], df['Science'], bottom=df['Math'], label='Science', color='orange')
+plt.title('Stacked Bar Chart - Subject Scores')
+plt.xlabel('Name')
+plt.ylabel('Total Score')
+plt.legend()
+plt.show()
