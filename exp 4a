@@ -1,0 +1,61 @@
+install.packages("dplyr")
+install.packages("ggplot2")
+
+library(dplyr)
+library(ggplot2)
+# Create a sample data frame
+df <- data.frame(
+  ID = 1:10,
+  Age = sample(18:65, 10),
+  Income = sample(30000:90000, 10),
+  Gender = c('Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Male'),
+  Education = c('High School', 'Bachelor', 'Master', 'PhD', 'Bachelor', 'Master', 'Bachelor', 'PhD', 'High School', 'Master')
+)
+# --- Data Inspection ---
+print("Head of dataset:")
+print(head(df))
+print("Summary statistics:")
+print(summary(df))
+print("Missing values:")
+print(colSums(is.na(df)))
+print("Unique values:")
+print(unique(df$Gender))
+print(unique(df$Education))
+
+# --- Data Cleaning and Filtering ---
+# Select only Age and Income columns
+selected_columns <- df %>% select(Age, Income)
+print("Selected columns:")
+print(selected_columns)
+# Filter rows where Age > 30
+filtered_data <- df %>% filter(Age > 30)
+print("Filtered rows (Age > 30):")
+print(filtered_data)
+# Filter Male users with Master's education
+filtered_rows <- df %>% filter(Gender == 'Male' & Education == 'Master')
+print("Filtered rows (Male & Master's):")
+print(filtered_rows)
+# Create Age group category
+df$AgeGroup <- cut(df$Age, breaks = c(18, 30, 45, 65), labels = c("18-30", "31-45", "46-65"))
+# --- Data Visualization ---
+# Histogram of Age
+ggplot(df, aes(x = Age)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+  ggtitle("Age Distribution") +
+  xlab("Age") + ylab("Frequency") +
+  theme_minimal()
+# Boxplot of Income
+ggplot(df, aes(y = Income)) +
+  geom_boxplot(fill = "lightgreen") +
+  ggtitle("Income Distribution") +
+  ylab("Income") +
+  theme_minimal()
+# Bar chart of Gender
+ggplot(df, aes(x = Gender)) +
+  geom_bar(fill = "orange") +
+  ggtitle("Gender Distribution") +
+  xlab("Gender") + ylab("Count") +
+  theme_minimal()
+# Pie chart of Education
+education_count <- table(df$Education)
+pie(education_count, col = rainbow(length(education_count)), main = "Education Distribution")
