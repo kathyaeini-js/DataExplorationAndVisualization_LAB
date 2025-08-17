@@ -1,0 +1,68 @@
+# Ex. No:7 - Cartographic Visualization for Multiple Datasets
+
+
+# STEP 1: Import required libraries
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+
+# STEP 2: Create sample datasets
+# World Data
+world_data = pd.DataFrame({
+    'Country': ['USA', 'Canada', 'India', 'Brazil', 'China', 'Australia', 'Russia'],
+    'Value': [100, 150, 200, 80, 120, 90, 110]
+})
+
+# India States Data
+india_states_data = pd.DataFrame({
+    'State': ['Maharashtra', 'Karnataka', 'Tamil Nadu', 'Uttar Pradesh', 'Gujarat', 'West Bengal'],
+    'Value': [50, 75, 60, 40, 30, 45]
+})
+
+# India Districts Data
+india_districts_data = pd.DataFrame({
+    'District': ['Mumbai', 'Bengaluru', 'Chennai', 'Lucknow', 'Ahmedabad', 'Kolkata'],
+    'Value': [20, 30, 25, 15, 10, 18]
+})
+
+# STEP 3: Load maps
+world_map = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+
+# For demonstration, using the same world_map for India states/districts
+# In practice, you should use shapefiles for India states and districts
+india_states_map = world_map[world_map['name'] == 'India']
+india_districts_map = world_map[world_map['name'] == 'India']
+
+# STEP 4: Merge data with maps
+world_data_geo = world_map.merge(world_data, how='left', left_on='name', right_on='Country')
+india_states_data_geo = india_states_map.merge(india_states_data, how='left', left_on='name', right_on='State')
+india_districts_data_geo = india_districts_map.merge(india_districts_data, how='left', left_on='name', right_on='District')
+
+# STEP 5: Define a function to plot maps
+def plot_map(gdf, column, title, ax, cmap='YlOrRd'):
+    """
+    Plots a geodataframe with values on a map.
+    """
+    gdf.boundary.plot(ax=ax, linewidth=1, edgecolor='black')
+    gdf.plot(column=column, ax=ax, legend=True,
+             legend_kwds={'label': f"Values by {title}"},
+             cmap=cmap,
+             missing_kwds={"color": "lightgrey", "label": "No data"})
+    ax.set_title(title)
+    ax.axis('off')
+
+# STEP 6: Plot World, India States, and India Districts
+fig, axs = plt.subplots(1, 3, figsize=(24, 8))
+
+# Plot World Map
+plot_map(world_data_geo, 'Value', 'World Data', axs[0])
+
+# Plot India States
+plot_map(india_states_data_geo, 'Value', 'India States Data', axs[1])
+
+# Plot India Districts
+plot_map(india_districts_data_geo, 'Value', 'India Districts Data', axs[2])
+
+plt.tight_layout()
+plt.show()
